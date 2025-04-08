@@ -1,11 +1,11 @@
 #import time and os.path
 import time
-import os.path
+from pathlib import PurePath
+from pathlib import Path
 
 #initialize new_line, and file_path
 new_line = "\n"
-file_path = os.path.join(os.path.expanduser("~"), "Documents", "questions.txt")
-
+file_path = PurePath("~").joinpath("Documents", "questions.txt")
 #define add_question(string: str, code: int): 
 def add_question(string: str, code: int):
     with open(file_path, "a") as file:
@@ -66,12 +66,12 @@ try:
     with open(file_path, "x") as file: 
         file.write(f"File created at: {time.asctime()}")
         file.close()
-    print(f"File is stored at {os.path.abspath(file.name)}")
+    print(f"File is stored at {Path(file.name)}")
 
 except FileExistsError:
     print("questions.txt is already created")
     with open(file_path, "r") as file:
-        print(f"File is stored at {os.path.abspath(file.name)}")
+        print(f"File is stored at {Path(file.name)}")
 
 #while loop to continue asking user for input until ended
 while True:
