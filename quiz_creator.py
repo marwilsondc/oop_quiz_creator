@@ -1,37 +1,39 @@
-#import time
+#import time and os.path
 import time
+import os.path
 
-#initialize new_line
+#initialize new_line, and file_path
 new_line = "\n"
+file_path = os.path.join(os.path.expanduser("~"), "Documents", "questions.txt")
 
 #define add_question(string: str, code: int): 
 def add_question(string: str, code: int):
-    with open("questions.txt", "a") as file:
+    with open(file_path, "a") as file:
         file.write(f"{new_line}<{code:b}> <question>:{string}{new_line}")
         file.close()
 
 #define add_choices(string: str, code: int):
 def add_choices(string: str, code:int):
-    with open("questions.txt", "a") as file:
+    with open(file_path, "a") as file:
         file.write(f"<{code:b}> <choice>:{string}{new_line}")
         file.close()
 
 #define add_correct(string: str, code: int):
 def add_correct(string: str, code: int):
-    with open("questions.txt", "a") as file:
+    with open(file_path, "a") as file:
         file.write(f"<{code:b}> <correct>:{string}{new_line}")
         file.close()
 
 #define ques_count() -> int:
 def ques_count() -> int:
-    with open("questions.txt", "r") as file:
+    with open(file_path, "r") as file:
         content = file.read()
         return content.count("<question>")
     file.close()
 
 #define edit_content(filename: str, line_num: int, text: str): 
 def edit_content(line_num: int, text: str):
-    with open("questions.txt", "r") as file:
+    with open(file_path, "r") as file:
         lines = file.readlines()
     
     bin_code = lines[line_num].split(":")
@@ -44,7 +46,7 @@ def edit_content(line_num: int, text: str):
         elif "<choice>" in bin_code or "<correct>" in bin_code:
             lines[line_num] = f"{bin_code}:{text}{new_line}"
 
-        with open("questions.txt", "w") as file:
+        with open(file_path, "w") as file:
             for line in lines:
                 file.write(line)
     
@@ -55,18 +57,21 @@ def edit_content(line_num: int, text: str):
     file.close()
 
 def clear_contents():
-    with open("questions.txt", "w") as file:
+    with open(file_path, "w") as file:
         file.write(f"File cleared at: {time.asctime()}")
         file.close()
 
 #create the file 
 try:
-    with open("questions.txt", "x") as file: 
+    with open(file_path, "x") as file: 
         file.write(f"File created at: {time.asctime()}")
         file.close()
+    print(f"File is stored at {os.path.abspath(file.name)}")
 
 except FileExistsError:
     print("questions.txt is already created")
+    with open(file_path, "r") as file:
+        print(f"File is stored at {os.path.abspath(file.name)}")
 
 #while loop to continue asking user for input until ended
 while True:
@@ -105,7 +110,7 @@ Questions added: {local_count}
 
     elif user_select == "2":
         line_count = 0
-        with open("questions.txt", "r") as file:
+        with open(file_path, "r") as file:
             lines = file.readlines()
             for line in lines:
                 print(f"<line {line_count}>: {line}")
@@ -136,6 +141,7 @@ Questions added: {local_count}
             if user_input == "y":
                 clear_contents()
                 print("Cleared file contents!")
+                break
 
             elif user_input == "n":
                 print("Okay!")
