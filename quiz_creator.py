@@ -7,19 +7,19 @@ new_line = "\n"
 #define add_question(string: str, code: int): 
 def add_question(string: str, code: int):
     with open("questions.txt", "a") as file:
-        file.write(f"{new_line}<{bin(code)}> <question>:{string}")
+        file.write(f"{new_line}<{code:b}> <question>:{string}{new_line}")
         file.close()
 
 #define add_choices(string: str, code: int):
 def add_choices(string: str, code:int):
     with open("questions.txt", "a") as file:
-        file.write(f"{new_line}<{bin(code)}> <choice>:{string}")
+        file.write(f"<{code:b}> <choice>:{string}{new_line}")
         file.close()
 
 #define add_correct(string: str, code: int):
 def add_correct(string: str, code: int):
     with open("questions.txt", "a") as file:
-        file.write(f"{new_line}<{bin(code)}> <correct>:{string}")
+        file.write(f"<{code:b}> <correct>:{string}{new_line}")
         file.close()
 
 #define ques_count() -> int:
@@ -65,6 +65,12 @@ Questions added: {local_count}
     if user_select == "1":
         user_input = input("Input the question you want to add: ")
         add_question(user_input, local_count + 1)
+        local_count = ques_count()
+        for i in range(0, 4):
+            user_input = input("Input the choices that you want to add to your question: ")
+            add_choices(user_input, local_count)
+        user_input = input("Input the correct answer from your choices in the question: ")
+        add_correct(user_input, local_count)
 
     elif user_select == "2":
         break
