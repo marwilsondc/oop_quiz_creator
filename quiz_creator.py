@@ -28,11 +28,28 @@ def ques_count() -> int:
         content = file.read()
         return content.count("<question>")
 
-#define find_question(code: int):
-def find_question(code: int):
+#define edit_content(filename: str, line_num: int, text: str): 
+def edit_content(line_num: int, text: str):
     with open("questions.txt", "r") as file:
-        content = file.read()
-        return content.find(f"{bin(code)} <question>")
+        lines = file.readlines()
+    
+    bin_code = lines[line_num].split(":")
+    bin_code = bin_code[0]
+
+    if line_num <= len(lines):
+        if "<question>" in bin_code:
+            lines[line_num] = f"{new_line}{bin_code}:{text}{new_line}"
+        
+        elif "<choice>" in bin_code or "<correct>" in bin_code:
+            lines[line_num] = f"{bin_code}:{text}{new_line}"
+
+        with open("questions.txt", "w") as file:
+            for line in lines:
+                file.write(line)
+    
+    else: 
+        print("Line", line_num, "not in file.")
+        print("File has", len(lines), "lines.")
 
 #create the file 
 try:
@@ -76,13 +93,28 @@ Questions added: {local_count}
         add_correct(user_input, local_count)
 
     elif user_select == "2":
+        line_count = 0
         with open("questions.txt", "r") as file:
             lines = file.readlines()
             for line in lines:
-                print(line)
+                print(f"<line {line_count}>: {line}")
+                line_count += 1
     
     elif user_select == "3":
-        pass
+        print("Before trying to edit a file, it is advised that the user should view file contents first. "
+        "\nThis is to let the user know about the line number to input in editing the file")
+
+        while True:
+            user_input = input("Input the line number to edit: ")
+            if user_input.isnumeric():
+                user_input = int(user_input)
+                break
+            else: 
+                continue
+        
+        user_edit = input("Input the text to replace current line: ")
+
+        edit_content(user_input, user_edit)
 
     elif user_select == "4":
         break
