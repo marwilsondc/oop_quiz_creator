@@ -27,6 +27,7 @@ def ques_count() -> int:
     with open("questions.txt", "r") as file:
         content = file.read()
         return content.count("<question>")
+    file.close()
 
 #define edit_content(filename: str, line_num: int, text: str): 
 def edit_content(line_num: int, text: str):
@@ -50,6 +51,13 @@ def edit_content(line_num: int, text: str):
     else: 
         print("Line", line_num, "not in file.")
         print("File has", len(lines), "lines.")
+    
+    file.close()
+
+def clear_contents():
+    with open("questions.txt", "w") as file:
+        file.write(f"File cleared at: {time.asctime()}")
+        file.close()
 
 #create the file 
 try:
@@ -72,12 +80,13 @@ Questions added: {local_count}
 [1] Add Question Set
 [2] View File Contents
 [3] Edit File Contents
-[4] Quit""")
+[4] Clear FIle Contents
+[5] Quit""")
     
 
     while True:
         user_select = input("Select from the menu above!: ")
-        if user_select.isnumeric() and int(user_select) < 5:
+        if user_select.isnumeric() and int(user_select) < 6:
             break
         else:
             continue
@@ -91,6 +100,8 @@ Questions added: {local_count}
             add_choices(user_input, local_count)
         user_input = input("Input the correct answer from your choices in the question: ")
         add_correct(user_input, local_count)
+        print("New question added!")
+        continue
 
     elif user_select == "2":
         line_count = 0
@@ -99,6 +110,7 @@ Questions added: {local_count}
             for line in lines:
                 print(f"<line {line_count}>: {line}")
                 line_count += 1
+        continue
     
     elif user_select == "3":
         print("Before trying to edit a file, it is advised that the user should view file contents first. "
@@ -115,6 +127,25 @@ Questions added: {local_count}
         user_edit = input("Input the text to replace current line: ")
 
         edit_content(user_input, user_edit)
+        print("Done!")
 
     elif user_select == "4":
+        while True:
+            user_input = input("This will clear the file's contents. Are you sure? [y/n]: ")
+            
+            if user_input == "y":
+                clear_contents()
+                print("Cleared file contents!")
+
+            elif user_input == "n":
+                print("Okay!")
+                break
+            
+            else:
+                continue
+
+        continue
+
+    elif user_select == "5":
+        print("Goodbye!")
         break
