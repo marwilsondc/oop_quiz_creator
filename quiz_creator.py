@@ -53,11 +53,14 @@ Main Menu:
 
 Questions added: {local_count} 
 [1] Add Question Set
-[2] Quit""")
+[2] View File Contents
+[3] Edit File Contents
+[4] Quit""")
     
+
     while True:
         user_select = input("Select from the menu above!: ")
-        if user_select.isnumeric() and int(user_select) < 3:
+        if user_select.isnumeric() and int(user_select) < 5:
             break
         else:
             continue
@@ -73,4 +76,13 @@ Questions added: {local_count}
         add_correct(user_input, local_count)
 
     elif user_select == "2":
+        with open("questions.txt", "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                print(line)
+    
+    elif user_select == "3":
+        pass
+
+    elif user_select == "4":
         break
