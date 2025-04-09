@@ -3,9 +3,11 @@ import time
 from pathlib import PurePath
 from pathlib import Path
 
-#initialize new_line, and file_path
+#initialize new_line, and file_path and create file
 new_line = "\n"
-file_path = PurePath("~").joinpath("Documents", "questions.txt")
+file_path = Path("~", "Documents", "questions.txt")
+file_path.parent.mkdir(exist_ok = True, parents = True)
+
 #define add_question(string: str, code: int): 
 def add_question(string: str, code: int):
     with open(file_path, "a") as file:
@@ -63,7 +65,7 @@ def clear_contents():
 
 #create the file 
 try:
-    with open(file_path, "x") as file: 
+    with open(file_path, "x") as file:
         file.write(f"File created at: {time.asctime()}")
         file.close()
     print(f"File is stored at {Path(file.name)}")
