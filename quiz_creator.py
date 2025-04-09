@@ -7,7 +7,7 @@ from pathlib import Path
 #file_path contains "questions.txt" as default
 #program attempts to create the file every time it opens, it will do nothing if file already exists
 new_line = "\n"
-file_path = Path("~", "Documents", "questions.txt")
+file_path = Path("~", "Documents", "questions.txt").expanduser()
 file_path.parent.mkdir(exist_ok = True, parents = True)
 
 #define add_question(string: str, code: int):
@@ -37,7 +37,7 @@ def add_correct(string: str, code: int):
 #If no input was given, function will use default parameter
 def change_path(new_file: str = "questions"):
     global file_path
-    file_path = Path("~", "Documents", new_file)
+    file_path = Path("~", "Documents", new_file + ".txt").expanduser()
     file_path.parent.mkdir(exist_ok = True, parents = True)
 
     try:
@@ -52,7 +52,7 @@ def change_path(new_file: str = "questions"):
 
 #define ques_count() -> int:
 #this function is used to count the questions within the selected file
-#used in the main menu to give user quick info about the file contents
+#used in the main menu to give user quick info about the file contents5
 def ques_count() -> int:
     with open(file_path, "r") as file:
         content = file.read()
@@ -206,14 +206,14 @@ Questions added: {local_count}
 
         continue
 
-    #This option allows the user to change the file that the program will access, storing the file in ~/Documents
+    #This option allows the user to change the file that the program will access, storing the file in ../Documents
     #Before proceeding to change the directory, the program first validates the user input. If input is not valid, program asks again.
     #if user_input is none, the program will go back to questions.txt
     elif user_select == "5":
         print("This changes the directory that this program will access. If the file does not exist, it will create it.")
 
         while True:
-            user_input = input("Input the new file to access, no need for \'.txt\' (stored at ~/Documents): ")
+            user_input = input("Input the new file to access, no need for \'.txt\' (stored at ../Documents): ")
             valid_flag = True
             for i in user_input:
                 if i.isspace():
@@ -232,8 +232,6 @@ Questions added: {local_count}
                 break
             else:
                 continue
-
-        user_input += ".txt"
 
         change_path(user_input)
 
