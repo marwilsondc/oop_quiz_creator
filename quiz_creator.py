@@ -98,6 +98,8 @@ while True:
     print(f"""Welcome to Quiz Creator! 
 
 Main Menu:
+          
+File opened: {Path(file.name)}
 
 Questions added: {local_count} 
 [1] Add Question Set
