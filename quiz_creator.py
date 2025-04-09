@@ -35,7 +35,7 @@ def add_correct(string: str, code: int):
 #this function modifies the global variable, file_path, into the user input 
 #function creates the file if it does not exist, also initializing date of creation within the file
 #If no input was given, function will use default parameter
-def change_path(new_file: str = "questions"):
+def change_path(new_file: str):
     global file_path
     file_path = Path("~", "Documents", new_file + ".txt").expanduser()
     file_path.parent.mkdir(exist_ok = True, parents = True)
@@ -77,7 +77,7 @@ def edit_content(line_num: int, text: str):
 
     if line_num <= len(lines):
         if "<question>" in bin_code:
-            lines[line_num] = f"{new_line}{bin_code}:{text}{new_line}"
+            lines[line_num] = f"{bin_code}:{text}{new_line}"
         
         elif "<choice>" in bin_code or "<correct>" in bin_code:
             lines[line_num] = f"{bin_code}:{text}{new_line}"
@@ -232,6 +232,9 @@ Questions added: {local_count}
                 break
             else:
                 continue
+        
+        if user_input == "":
+            user_input = "questions"
 
         change_path(user_input)
 
