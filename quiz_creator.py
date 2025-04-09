@@ -1,6 +1,5 @@
 #import time and os.path
 import time
-from pathlib import PurePath
 from pathlib import Path
 
 #initialize new_line, and file_path and create file
@@ -25,6 +24,23 @@ def add_correct(string: str, code: int):
     with open(file_path, "a") as file:
         file.write(f"<{code:b}> <correct>:{string}{new_line}")
         file.close()
+
+#define change_path(new_file: str = "questions.txt"):
+def change_path(new_file: str = "questions"):
+    global file_path
+    file_path = Path("~", "Documents", new_file)
+    file_path.parent.mkdir(exist_ok = True, parents = True)
+
+    try:
+        with open(file_path, "x") as file:
+            file.write(f"File created at: {time.asctime()}")
+        file.close()
+        print(f"File is stored at {Path(file.name)}")
+
+    except FileExistsError:
+        print("questions.txt is already created")
+        with open(file_path, "r") as file:
+            print(f"File is stored at {Path(file.name)}")
 
 #define ques_count() -> int:
 def ques_count() -> int:
@@ -87,13 +103,14 @@ Questions added: {local_count}
 [1] Add Question Set
 [2] View File Contents
 [3] Edit File Contents
-[4] Clear FIle Contents
-[5] Quit""")
+[4] Clear File Contents
+[5] Change File Directory
+[6] Quit""")
     
 
     while True:
         user_select = input("Select from the menu above!: ")
-        if user_select.isnumeric() and int(user_select) < 6:
+        if user_select.isnumeric() and int(user_select) < 7:
             break
         else:
             continue
@@ -155,5 +172,32 @@ Questions added: {local_count}
         continue
 
     elif user_select == "5":
+        print("This changes the directory that this program will access. If the file does not exist, it will create it.")
+
+        while True:
+            user_input = input("Input the new file to access, no need for \'.txt\' (stored at ~/Documents): ")
+            for i in user_input:
+                if i.isspace():
+                    print("Filename cannot contain spaces, try again")
+                    valid_flag = False
+                    break
+                elif i.isalnum() or i in ["-","_"]:
+                    valid_flag = True
+                    continue
+                else: 
+                    print("Filename cannot contain symbols other than \'-\' or \'_\'")
+                    valid_flag = False
+                    break
+            
+            if valid_flag:
+                break
+            else:
+                continue
+
+        user_input += ".txt"
+
+        change_path(user_input)
+
+    elif user_select == "6":
         print("Goodbye!")
         break
